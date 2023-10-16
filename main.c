@@ -19,19 +19,20 @@ int main(int ac, char **argv, char **env)
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
+			free(input);
+			free_grid(command);
 			exit(1);
 		}
 
 		/* Parse the input*/
 		command = pars_input(input);
 		if (command == NULL)
-			continue;
-
+			{
+				free(input);
+				continue;
+			}
+		free(input);
 		/* Execute the command */
 		execute(command, argv, env);
 	}
-
-	free(input);
-	free_grid(command);
-	return (0);
 }

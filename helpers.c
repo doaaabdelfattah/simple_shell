@@ -8,6 +8,7 @@ char *getinput(void)
     ssize_t characters;
     size_t bufsize;
     char *input;
+    bufsize = 0;
     input = NULL;
 
     characters = getline(&input, &bufsize, stdin);
@@ -27,14 +28,14 @@ char *getinput(void)
 
 char **pars_input(char *input)
 {
-    int i;
+    int i, j;
     char *input_copy;
     char *token;
     size_t counter;
     char **command;
     i = 0;
 
-    input_copy = strdup(input);
+    input_copy = _strdup(input);
     if (input_copy == NULL)
         return NULL;
 
@@ -66,10 +67,14 @@ char **pars_input(char *input)
     token = strtok(input, " \n\t");
     while (token)
     {
-        command[i] = malloc(sizeof(char) * _strlen(token));
+        command[i] = malloc(sizeof(char) * (_strlen(token) + 1));
         if (command[i] == NULL)
         {
-             free_grid(command);
+            for(j = 0; j < i; j++)
+            {
+                free(command[j]);
+            }
+            free(command);
              return NULL;
         }
         strcpy(command[i], token);
@@ -89,30 +94,36 @@ char **pars_input(char *input)
 
 void execute(char **command, char **argv, char **env)
 {
-    pid_t fork_value;
+    pid_t fork_value, wait_value;
     int status;
 
 
     fork_value = fork();
-    /* if (fork_value == -1)
+    /* if fork fails */
+    if (fork_value == -1)
     {
         perror(argv[0]);
+        free_grid(command);
         exit(1);
     }
-    */
-
+    /* on child process */
     if (fork_value == 0)
     {
     if (execve(command[0], command, env) == -1)
         {
             perror(argv[0]);
             free_grid(command);
-            exit(0);
+            exit(1);
         }
     }
+    /* on parent process */
     else
     {
-        wait(&status);
+        wait_value = wait(&status);
+        if (wait_value == -1)
+        {
+            perror("wait error");
+        }
         free_grid(command);
     }
 
