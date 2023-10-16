@@ -1,66 +1,37 @@
 #include "main.h"
 
-int main(int ac, char **argv)
+int main(int ac, char **argv, char **env)
 {
-
-	char *buffer;
-	char *buffer_copy;
-	char *token;
-	int token_num, i;
-	ssize_t characters;
-
-	size_t bufsize = 0;
-	token_num = 0;
-
+	char *input;
+	char **command;
 	(void)ac;
+	input = NULL;
 
-	buffer = NULL;
-	buffer_copy = NULL;
-	printf("$ ");
-	characters = getline(&buffer, &bufsize, stdin);
-	/* Allocate memory for the copy */
-	buffer_copy = malloc(sizeof(char) * characters);
-	if (buffer_copy == NULL)
+	while (1)
 	{
-		return (-1);
-	}
-	/* Make a copy as the original will be destroyed */
-	_strcpy(buffer_copy, buffer);
-	if (characters == -1)
-	{
-		perror("Error");
-		return (-1);
-	}
-	else
-	{
-		/*Parsing the input*/
-		token = strtok(buffer, " ");
-		if (token == NULL)
-		{
-			printf("empty string!");
-			return (1);
-		}
-		/* walk through other tokens */
-		while (token != NULL)
-		{
-			token_num++;
-			/* parse the same string again */
-			token = strtok(NULL, " ");
-		}
-		token_num++;
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "$ ", 2);
 
-		argv = malloc(sizeof(char *) * token_num);
-		token = strtok(buffer_copy, " ");
-		for (i = 0; token != NULL; i++)
+		/* Read input */
+		input = getinput();
+
+		if (input == NULL) /* EOF */
 		{
-			argv[i] = malloc(sizeof(char) * _strlen(token));
-			_strcpy(argv[i], token);
-			token = strtok(NULL, " ");
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			exit(1);
 		}
-		argv[i] = NULL;
+
+		/* Parse the input*/
+		command = pars_input(input);
+		if (command == NULL)
+			continue;
+
+		/* Execute the command */
+		execute(command, argv, env);
 	}
-	free(argv);
-	free(buffer_copy);
-	free(buffer);
+
+	free(input);
+	free_grid(command);
 	return (0);
 }
