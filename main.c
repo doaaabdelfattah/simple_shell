@@ -2,12 +2,14 @@
 
 int main(int ac, char **argv, char **env)
 {
+	int status;
 	char *input;
 	char **command;
 	(void)ac;
+	
 	input = NULL;
-
-	while (1)
+	status = -1;
+	do
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 2);
@@ -20,12 +22,14 @@ int main(int ac, char **argv, char **env)
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
 			free(input);
+			input = NULL;
 			free_grid(command);
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 
 		/* Parse the input*/
 		command = pars_input(input);
+		
 		if (command == NULL)
 			{
 				free(input);
@@ -35,4 +39,7 @@ int main(int ac, char **argv, char **env)
 		/* Execute the command */
 		execute(command, argv, env);
 	}
+	while (status == -1);
+	return (0);
 }
+

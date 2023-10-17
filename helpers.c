@@ -5,17 +5,25 @@
  */
 char *getinput(void)
 {
-    ssize_t characters;
     size_t bufsize;
     char *input;
     bufsize = 0;
     input = NULL;
 
-    characters = getline(&input, &bufsize, stdin);
-    if (characters == -1)
+    /* if get line fails */
+    if(getline(&input, &bufsize, stdin) == -1)
     {
+        if (feof(stdin))
+        {
+            free(input);
+            exit(EXIT_SUCCESS);
+        }
+        else
+        {
         free(input);
-        return (NULL);
+        perror("error ehile reading");
+        exit(EXIT_FAILURE);
+        }
     }
     return (input);
 }
@@ -61,7 +69,12 @@ char **pars_input(char *input)
     if (command == NULL)
     {
         free(input);
-        return NULL;
+        exit(EXIT_FAILURE);
+        /* return NULL; */
+    }
+    if (command[0])
+    {
+
     }
     /* Parsing the input and store them in array */
     token = strtok(input, " \n\t");
@@ -75,14 +88,15 @@ char **pars_input(char *input)
                 free(command[j]);
             }
             free(command);
-             return NULL;
+            free(input);
+            exit(EXIT_FAILURE);
         }
         _strcpy(command[i], token);
         i++;
         token = strtok(NULL, " \n\t");
     }
     command[counter] = NULL;
-
+    
     return (command);
 }
 
@@ -96,7 +110,7 @@ void execute(char **command, char **argv, char **env)
 {
     pid_t fork_value, wait_value;
     int status;
-
+    char *full_path;
 
     fork_value = fork();
     /* if fork fails */
@@ -109,13 +123,19 @@ void execute(char **command, char **argv, char **env)
     /* on child process */
     if (fork_value == 0)
     {
-    if (execve(command[0], command, env) == -1)
+        full_path = get_cmd(command[0]);
+        if(full_path)
+        {
+        if (execve(full_path, command, env) == -1)
         {
             perror(argv[0]);
             free_grid(command);
+            free(full_path);
             exit(1);
         }
+        }
     }
+    
     /* on parent process */
     else
     {
