@@ -24,12 +24,15 @@ int _strlen(char *s)
 
 char *_strcpy(char *dest, char *src)
 {
-	int i, len = _strlen(src);
+	int i;
+	i = 0;
 
-	for (i = 0; i <= len; i++)
+	while(src[i])
 	{
 		dest[i] = src[i];
+		i++;
 	}
+	dest[i] = '\0';
 	return (dest);
 }
 
@@ -73,18 +76,15 @@ char *_strdup(char *str)
  * Return: integer
  */
 
-/* int _strncmp(char *s1, char *s2, size_t n)
+int _strcmp(char *s1, char *s2)
 {
-int i;
-
-for (i = 0; s1[i] != '\0' || s2[i] != '\0' && n; i++, n--)
-{
-	if (s1[i] != s2[i])
-	{
-	break;
-	}
-	else
-	continue;
+    size_t i;
+    for (i = 0; s1[i] != '\0' || s2[i] != '\0'; i++)
+    {
+        if (s1[i] != s2[i])
+        {
+            return (s1[i] - s2[i]);
+        }
+    }
+    return (0);
 }
-return (s1[i] - s2[i]);
-} */

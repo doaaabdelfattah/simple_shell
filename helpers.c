@@ -77,7 +77,7 @@ char **pars_input(char *input)
             free(command);
              return NULL;
         }
-        strcpy(command[i], token);
+        _strcpy(command[i], token);
         i++;
         token = strtok(NULL, " \n\t");
     }

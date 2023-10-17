@@ -5,15 +5,21 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-extern char**environ;
+extern char **environ;
 
-int myprint(char *str);
+/* String Functions */
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
-int _strncmp(char *s1, char *s2, size_t n);
+int _strcmp(char *s1, char *s);
+
+/* Helpers function */
 void free_grid(char **grid);
 
+char *_getenv(char *name);
+
+
+/* Main functions for shell */
 char *getinput (void);
 char **pars_input(char *input);
 void execute(char **command, char **argv, char **env);
