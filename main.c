@@ -1,4 +1,11 @@
 #include "main.h"
+/**
+*main - main function
+*@ac: arg count
+*@argv: argument vector
+*@env: environ variable
+*Return: 0 on success
+*/
 
 int main(int ac, char **argv, char **env)
 {
@@ -6,11 +13,10 @@ int main(int ac, char **argv, char **env)
 	char *input;
 	char **command;
 	(void)ac;
-	
+
 	input = NULL;
 	status = -1;
-	do
-	{
+	do {
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 2);
 
@@ -24,22 +30,21 @@ int main(int ac, char **argv, char **env)
 			free(input);
 			input = NULL;
 			free_grid(command);
-			exit(EXIT_FAILURE);
+			return (1);
 		}
 
 		/* Parse the input*/
 		command = pars_input(input);
-		
+
 		if (command == NULL)
-			{
-				free(input);
-				continue;
-			}
+		{
+			free(input);
+			continue;
+		}
 		free(input);
 		/* Execute the command */
 		execute(command, argv, env);
-	}
-	while (status == -1);
+	} while (status == -1);
 	return (0);
 }
 

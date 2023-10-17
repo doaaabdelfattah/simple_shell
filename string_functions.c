@@ -25,9 +25,9 @@ int _strlen(char *s)
 char *_strcpy(char *dest, char *src)
 {
 	int i;
-	i = 0;
 
-	while(src[i])
+	i = 0;
+	while (src[i])
 	{
 		dest[i] = src[i];
 		i++;
@@ -53,7 +53,7 @@ char *_strdup(char *str)
 	}
 	for (size = 0; str[size] != '\0'; size++)
 		continue;
-		
+
 	ptr = (char *)malloc(size + 1);
 	if (ptr == NULL)
 	{
@@ -78,15 +78,16 @@ char *_strdup(char *str)
 
 int _strcmp(char *s1, char *s2)
 {
-    size_t i;
-    for (i = 0; s1[i] != '\0' || s2[i] != '\0'; i++)
-    {
-        if (s1[i] != s2[i])
-        {
-            return (s1[i] - s2[i]);
-        }
-    }
-    return (0);
+	size_t i;
+
+	for (i = 0; s1[i] != '\0' || s2[i] != '\0'; i++)
+	{
+		if (s1[i] != s2[i])
+		{
+			return (s1[i] - s2[i]);
+		}
+	}
+	return (0);
 }
 
 /**
@@ -99,16 +100,16 @@ int _strcmp(char *s1, char *s2)
 
 char *_strcat(char *dest, char *src)
 {
-int destlen =  _strlen(dest);
-int srclen =  _strlen(src);
-int i;
+	int destlen =  _strlen(dest);
+	int srclen =  _strlen(src);
+	int i;
 
 
-for (i = 0; i < srclen; i++)
-{
-dest[destlen + i] = src[i];
-}
-dest[destlen + i] = '\0';
-return (dest);
+	for (i = 0; i < srclen; i++)
+	{
+		dest[destlen + i] = src[i];
+	}
+	dest[destlen + i] = '\0';
+	return (dest);
 
 }

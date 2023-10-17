@@ -24,7 +24,8 @@ char *get_cmd(char *command);
 /* Main functions for shell */
 char *getinput (void);
 char **pars_input(char *input);
-void execute(char **command, char **argv, char **env);
+int count_tokens(char *input);
+int execute(char **command, char **argv, char **env);
 
 
 
