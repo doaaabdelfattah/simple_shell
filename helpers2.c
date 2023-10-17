@@ -29,7 +29,6 @@ int execute(char **command, char **argv, char **env)
 			free_grid(command);
 			exit(1);
 		}
-		create_child(char *path, char**command, char)
 		if (fork_value == 0) /* on child process */
 		{
 			if (execve(full_path, command, env) == -1)
