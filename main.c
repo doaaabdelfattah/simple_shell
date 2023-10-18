@@ -12,7 +12,7 @@ int main(int ac, char **argv)
 	int status;
 	char *input;
 	char **command;
-	int (*operation)(char **, int status);
+	void (*operation)(char **, int status);
 	(void)ac;
 	 
 

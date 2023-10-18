@@ -28,7 +28,9 @@ int count_tokens(char *input);
 int execute(char **command, char **argv);
 
 /* Handle Built-in commands */
-int (*handle_builtin(char *str))(char **, int);
+void (*handle_builtin(char *str))(char **, int);
+void my_env(char **command, int status);
+void my_exit(char **str, int status);
 /**
  * struct builtin - Short description
  * @command: commans string
@@ -37,9 +39,9 @@ int (*handle_builtin(char *str))(char **, int);
 typedef struct builtin
 {
 char *command;
-int (*func)(char **, int);
+void (*func)(char **, int);
 } sp_t;
 
-int my_exit(char **str, int status);
+
 
 #endif
