@@ -52,8 +52,10 @@ int main(int ac, char **argv)
 				operation(command, status);
 
 			}
-
-	status = execute(command, argv);
+		else
+		{
+			status = execute(command, argv);
+		}
 	}
 	return (0);
 }
