@@ -42,18 +42,24 @@ char **pars_input(char *input)
 	char **command;
 
 	i = 0;
+	if (input == NULL)
+	return (NULL);
 	counter = count_tokens(input);
-
+	if (counter < 0)
+	return (NULL);
 	command = malloc(sizeof(char *) * (counter + 1));
 	if (command == NULL)
 	{
 		free(input);
-		exit(EXIT_FAILURE);
-		/* return NULL; */
+		return (NULL);
 	}
 	token = strtok(input, " \n\t");
-	if (token[0] == '#')
+	if (token == NULL)
+	{
+		free(input);
+		free(command);
 		return (NULL);
+	}
 	while (token)
 	{
 		command[i] = malloc(sizeof(char) * (_strlen(token) + 1));
@@ -63,15 +69,14 @@ char **pars_input(char *input)
 				free(command[j]);
 			free(command);
 			free(input);
-			exit(EXIT_FAILURE);
+			return (NULL);
 		}
 		_strcpy(command[i], token);
 		i++;
 		token = strtok(NULL, " \n\t");
 	}
 	command[counter] = NULL;
-	return (command);
-}
+	return (command); }
 
 /**
 *count_tokens - count number of tokens
@@ -89,15 +94,8 @@ int count_tokens(char *input)
 	input_copy = _strdup(input);
 	if (input_copy == NULL)
 	return (-1);
-
 	/* Parsing the copy to know words count*/
 	token = strtok(input_copy, " \n\t");
-	if (token == NULL)
-	{
-		free(input_copy);
-		input_copy = NULL;
-		return (0);
-	}
 	/* Calculate input words (tokens) */
 	while (token)
 	{

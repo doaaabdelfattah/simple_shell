@@ -38,7 +38,6 @@ int main(int ac, char **argv, char **env)
 
 		if (command == NULL)
 		{
-			free(input);
 			continue;
 		}
 		free(input);
