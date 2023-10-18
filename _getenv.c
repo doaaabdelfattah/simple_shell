@@ -1,9 +1,9 @@
 #include "main.h"
 /**
-*_getenv - function to get the value of environ
-*@name: pointer to the key
-*Return: pointer to the value
-*/
+ *_getenv - function to get the value of environ
+ *@name: pointer to the key
+ *Return: pointer to the value
+ */
 char *_getenv(char *name)
 {
 	char **env_var;

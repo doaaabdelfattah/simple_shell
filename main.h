@@ -22,7 +22,7 @@ char *_getenv(char *name);
 char *get_cmd(char *command);
 
 /* Main functions for shell */
-char *getinput (void);
+char *getinput(void);
 char **pars_input(char *input);
 int count_tokens(char *input);
 int execute(char **command, char **argv);
@@ -38,8 +38,8 @@ void my_exit(char **str, int status);
  */
 typedef struct builtin
 {
-char *command;
-void (*func)(char **, int);
+	char *command;
+	void (*func)(char **, int);
 } sp_t;
 
 

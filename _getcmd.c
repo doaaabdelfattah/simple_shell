@@ -1,9 +1,9 @@
 #include "main.h"
 /**
-*get_cmd - function to get the full path
-*@command: pointer to the command
-*Return: pointer to the full path
-*/
+ *get_cmd - function to get the full path
+ *@command: pointer to the command
+ *Return: pointer to the full path
+ */
 
 char *get_cmd(char *command)
 {

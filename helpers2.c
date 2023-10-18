@@ -3,7 +3,6 @@
  *execute - exectute the program
  *@command: command
  *@argv: argv
- *@env: environ var
  *Return: 0 on success
  */
 
@@ -21,41 +20,31 @@ int execute(char **command, char **argv)
 		free_grid(command);
 		return (127);
 	}
-		fork_value = fork();
-		if (fork_value == -1) /* if fork fails */
+	fork_value = fork();
+	if (fork_value == -1) /* if fork fails */
+	{
+		perror(argv[0]);
+		free_grid(command);
+		exit(1);
+	}
+	if (fork_value == 0) /* on child process */
+	{
+		if (execve(full_path, command, env) == -1)
 		{
 			perror(argv[0]);
 			free_grid(command);
-			exit(1);
-		}
-		if (fork_value == 0) /* on child process */
-		{
-			if (execve(full_path, command, env) == -1)
-			{
-				perror(argv[0]);
-				free_grid(command);
-				free(full_path); full_path = NULL;
-				/* exit(127);*/ /**********/ 
-			}
-		}
-			/* else
-			{
-				perror(argv[0]);
-				free_grid(command);
-				free(full_path); full_path = NULL;
-				exit(127);
-			}
 			free(full_path);
-			} */
-		/* on parent process */
-		else
-		{
-			waitpid(fork_value, &status, 0);
-			if (status == -1)
-				perror("wait error");
-			free_grid(command);
-			free(full_path);
+			full_path = NULL;
+			/* exit(127);*/ /**********/
 		}
+	}
+	{
+		waitpid(fork_value, &status, 0);
+		if (status == -1)
+			perror("wait error");
+		free_grid(command);
+		free(full_path);
+	}
 	return (status);
 }
 

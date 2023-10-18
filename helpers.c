@@ -36,47 +36,47 @@ char *getinput(void)
 
 char **pars_input(char *input)
 {
-	int i, j;
-	char *token;
-	int counter;
-	char **command;
+int i, j;
+char *token;
+int counter;
+char **command;
 
-	i = 0;
-	if (input == NULL)
+i = 0;
+if (input == NULL)
 	return (NULL);
-	counter = count_tokens(input);
-	if (counter < 0)
+counter = count_tokens(input);
+if (counter < 0)
 	return (NULL);
-	command = malloc(sizeof(char *) * (counter + 1));
-	if (command == NULL)
+command = malloc(sizeof(char *) * (counter + 1));
+if (command == NULL)
+{
+	free(input);
+	return (NULL);
+}
+token = strtok(input, " \n\t");
+if (token == NULL)
+{
+	free(input);
+	free(command);
+	return (NULL);
+}
+while (token)
+{
+	command[i] = malloc(sizeof(char) * (_strlen(token) + 1));
+	if (command[i] == NULL)
 	{
-		free(input);
-		return (NULL);
-	}
-	token = strtok(input, " \n\t");
-	if (token == NULL)
-	{
-		free(input);
+		for (j = 0; j < i; j++)
+			free(command[j]);
 		free(command);
+		free(input);
 		return (NULL);
 	}
-	while (token)
-	{
-		command[i] = malloc(sizeof(char) * (_strlen(token) + 1));
-		if (command[i] == NULL)
-		{
-			for (j = 0; j < i; j++)
-				free(command[j]);
-			free(command);
-			free(input);
-			return (NULL);
-		}
-		_strcpy(command[i], token);
-		i++;
-		token = strtok(NULL, " \n\t");
-	}
-	command[counter] = NULL;
-	return (command); }
+	_strcpy(command[i], token);
+	i++;
+	token = strtok(NULL, " \n\t");
+}
+command[counter] = NULL;
+return (command); }
 
 /**
 *count_tokens - count number of tokens
@@ -93,7 +93,7 @@ int count_tokens(char *input)
 	counter = 0;
 	input_copy = _strdup(input);
 	if (input_copy == NULL)
-	return (-1);
+		return (-1);
 	/* Parsing the copy to know words count*/
 	token = strtok(input_copy, " \n\t");
 	/* Calculate input words (tokens) */
