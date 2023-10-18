@@ -16,9 +16,9 @@ int execute(char **command, char **argv, char **env)
 	full_path = get_cmd(command[0]);
 	if (!full_path)
 	{
-		printf("not found\n");
+		printf("not found\n"); /*print error*/
 		free_grid(command);
-		return(127);
+		return (127);
 	}
 	if (full_path)
 	{
@@ -59,8 +59,6 @@ int execute(char **command, char **argv, char **env)
 	}
 	return (0);
 }
-
-
 
 /**
  * free_grid - free 2d array

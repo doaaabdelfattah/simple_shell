@@ -12,11 +12,14 @@ int main(int ac, char **argv, char **env)
 	int status;
 	char *input;
 	char **command;
+	int (*operation)(char **);
 	(void)ac;
+	 
 
 	input = NULL;
-	status = -1;
-	do {
+	status = 0;
+	while (1)
+	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 2);
 
@@ -30,7 +33,7 @@ int main(int ac, char **argv, char **env)
 			free(input);
 			input = NULL;
 			free_grid(command);
-			return (1);
+			return (status);
 		}
 
 		/* Parse the input*/
@@ -38,12 +41,20 @@ int main(int ac, char **argv, char **env)
 
 		if (command == NULL)
 		{
+			free_grid(command); /********/
 			continue;
 		}
 		free(input);
-		/* Execute the command */
-		execute(command, argv, env);
-	} while (status == -1);
+		/* If the command is built-in command */
+		operation = handle_builtin(command[0]);
+		if (operation != NULL)
+			{
+				operation(command);
+
+			}
+
+	status = execute(command, argv, env);
+	}
 	return (0);
 }
 

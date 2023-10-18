@@ -27,6 +27,19 @@ char **pars_input(char *input);
 int count_tokens(char *input);
 int execute(char **command, char **argv, char **env);
 
+/* Handle Built-in commands */
+int (*handle_builtin(char *str))(char **);
+/**
+ * struct builtin - Short description
+ * @command: commans string
+ * @func: function pointer
+ */
+typedef struct builtin
+{
+char *command;
+int (*func)(char **);
+} sp_t;
 
+int my_exit(char **str);
 
 #endif
