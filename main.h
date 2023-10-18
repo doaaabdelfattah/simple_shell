@@ -25,10 +25,10 @@ char *get_cmd(char *command);
 char *getinput (void);
 char **pars_input(char *input);
 int count_tokens(char *input);
-int execute(char **command, char **argv, char **env);
+int execute(char **command, char **argv);
 
 /* Handle Built-in commands */
-int (*handle_builtin(char *str))(char **);
+int (*handle_builtin(char *str))(char **, int);
 /**
  * struct builtin - Short description
  * @command: commans string
@@ -37,9 +37,9 @@ int (*handle_builtin(char *str))(char **);
 typedef struct builtin
 {
 char *command;
-int (*func)(char **);
+int (*func)(char **, int);
 } sp_t;
 
-int my_exit(char **str);
+int my_exit(char **str, int status);
 
 #endif

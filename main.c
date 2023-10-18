@@ -7,12 +7,12 @@
 *Return: 0 on success
 */
 
-int main(int ac, char **argv, char **env)
+int main(int ac, char **argv)
 {
 	int status;
 	char *input;
 	char **command;
-	int (*operation)(char **);
+	int (*operation)(char **, int status);
 	(void)ac;
 	 
 
@@ -49,11 +49,11 @@ int main(int ac, char **argv, char **env)
 		operation = handle_builtin(command[0]);
 		if (operation != NULL)
 			{
-				operation(command);
+				operation(command, status);
 
 			}
 
-	status = execute(command, argv, env);
+	status = execute(command, argv);
 	}
 	return (0);
 }

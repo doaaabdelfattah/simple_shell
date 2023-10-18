@@ -1,6 +1,6 @@
 #include "main.h"
 
-int (*handle_builtin(char *str))(char **)
+int (*handle_builtin(char *str))(char **, int status)
 {
 sp_t fun_list[] = {
 {"exit", my_exit},
@@ -30,8 +30,8 @@ return (0);
 
 }*/
 
-int my_exit(char **command)
+int my_exit(char **command, int status)
 {
     free_grid(command);
-    exit(0);
+    exit(status);
 }

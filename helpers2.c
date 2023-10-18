@@ -7,21 +7,20 @@
  *Return: 0 on success
  */
 
-int execute(char **command, char **argv, char **env)
+int execute(char **command, char **argv)
 {
 	pid_t fork_value;
 	int status;
+	char **env = environ;
 	char *full_path;
 
 	full_path = get_cmd(command[0]);
 	if (!full_path)
 	{
-		printf("not found\n"); /*print error*/
+		printf("not found\n"); /*PRINT error ****/
 		free_grid(command);
 		return (127);
 	}
-	if (full_path)
-	{
 		fork_value = fork();
 		if (fork_value == -1) /* if fork fails */
 		{
@@ -36,9 +35,10 @@ int execute(char **command, char **argv, char **env)
 				perror(argv[0]);
 				free_grid(command);
 				free(full_path); full_path = NULL;
-				exit(127);
+				/* exit(127);*/ /**********/ 
 			}
-			else
+		}
+			/* else
 			{
 				perror(argv[0]);
 				free_grid(command);
@@ -46,7 +46,7 @@ int execute(char **command, char **argv, char **env)
 				exit(127);
 			}
 			free(full_path);
-		}
+			} */
 		/* on parent process */
 		else
 		{
@@ -56,9 +56,9 @@ int execute(char **command, char **argv, char **env)
 			free_grid(command);
 			free(full_path);
 		}
-	}
-	return (0);
+	return (status);
 }
+
 
 /**
  * free_grid - free 2d array
